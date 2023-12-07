@@ -58,7 +58,6 @@ def get_number(line, line_index, index, found_indexes: set):
 def get_answer(lines, indexes):
     neighbors = [(0, 1), (1, 0), (0, -1), (-1, 0), (1, -1), (-1, -1), (1, 1), (-1, 1)]
     answer = 0
-    #found_indexes = set()
     found_neighbors = []
     for coord in indexes:
         found_neighbors.append([])

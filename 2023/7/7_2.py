@@ -35,7 +35,6 @@ def score_hand(hand):
 def hand_type(hand):
     counts = [hand.count(card) for card in card_ranks if card != 'J']
     jokers = hand.count('J')
-    #print(hand, counts)
     if 5-jokers in counts:
         return 7
     elif 4-jokers in counts:
