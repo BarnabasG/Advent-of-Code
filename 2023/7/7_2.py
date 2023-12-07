@@ -43,7 +43,7 @@ def hand_type(hand):
         return 5
     elif 3-jokers in counts:
         return 4
-    elif counts.count(2) + jokers == 2 or jokers == 2:
+    elif counts.count(2) + jokers == 2:
         return 3
     elif 2-jokers in counts:
         return 2
