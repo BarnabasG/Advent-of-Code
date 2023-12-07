@@ -1,11 +1,8 @@
 import re
 
 def parse_input(filename='input.txt'):
-    with open('2/'+filename, 'r') as f:
-        lines = f.readlines()
-    
-    lines = [parse_line(line.rstrip('\n')) for line in lines]
-    print(lines)
+    with open('2023/2/'+filename, 'r') as f:
+        lines = [parse_line(line.rstrip('\n')) for line in f.readlines()]
     return lines
 
 def parse_line(line):

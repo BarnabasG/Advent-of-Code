@@ -1,9 +1,6 @@
 def parse_input(filename='input.txt'):
-    with open('1/'+filename, 'r') as f:
-        lines = f.readlines()
-    
-    lines = [line.rstrip('\n') for line in lines]
-    print(lines)
+    with open('2023/1/'+filename, 'r') as f:
+        lines = [line.rstrip('\n') for line in f.readlines()]
     return lines
 
 def get_answer(lines):
@@ -21,9 +18,8 @@ def get_answer(lines):
         total = int(f"{f}{l}")
         values.append(total)
     
-    return values, sum(values)
+    return sum(values)
 
-lines = parse_input('test_input.txt')
-values, answer = get_answer(lines)
-print(values)
+lines = parse_input()#'test_input.txt')
+answer = get_answer(lines)
 print(answer)

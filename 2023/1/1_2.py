@@ -1,9 +1,8 @@
 def parse_input(filename='input.txt'):
-    with open('1/'+filename, 'r') as f:
+    with open('2023/1/'+filename, 'r') as f:
         lines = f.readlines()
     
     lines = [line.rstrip('\n') for line in lines]
-    print(lines)
     return lines
 
 word_lookup = {
@@ -18,60 +17,37 @@ word_lookup = {
     'nine': '9'
 }
 
+def get_indexes(line, search):
+    l1 = []
+    length = len(line)
+    index = 0
+    while index < length:
+        i = line.find(search, index)
+        if i == -1:
+            return l1
+        l1.append(i)
+        index = i + 1
+    return l1
+
 def get_answer(lines):
     values = []
-    maps = {}
-    for line in lines:
-        f, l = None, None
-        for i, char in enumerate(line):
-            if char.isnumeric():
-                f = char
-                break
-            elif char.isalpha():
-                for j in range(i,max(i-5,-1),-1):
-                    #x = line[j:i+1]
-                    if line[j:i+1] in word_lookup:
-                        f = word_lookup[line[j:i+1]]
-                        break
-            if f is not None:
-                break
-        for i, char in enumerate(line[::-1]):
-            if char.isnumeric():
-                l = char
-                break
-            elif char.isalpha():
-                #y = range(min(i+1, 6), 1, -1)
-                for j in range(min(i+1, 6), 0, -1):
-                    #x = line[::-1][j:i][::-1]
-                    #z = line[-(i+1)]
-                    #zz = line[-j]
-                    #x = line[-(i+1):-j]
-                    if line[-(i+1):-j] in word_lookup:
-                        l = word_lookup[line[-(i+1):-j]]
-                        break
-                if l is None and i < 6:
-                    xx = line[-(i+1):]
-                    if line[-(i+1):] in word_lookup:
-                        l = word_lookup[line[-(i+1):]]
-                        break
-            if l is not None:
-                break
-        total = int(f"{f}{l}")
+    for line in lines:        
+        max_found = (-1,None)
+        min_found = (len(line)+1,None) 
+        for word, number in word_lookup.items():
+            x = get_indexes(line, word)
+            x += get_indexes(line, number)
+            if x:
+                if max(x) > max_found[0]:
+                    max_found = (max(x), number)
+                if min(x) < min_found[0]:
+                    min_found = (min(x), number)
+
+        total = int(f"{min_found[1]}{max_found[1]}")
         values.append(total)
-        maps[line] = [f, l]
     
-    return values, sum(values), maps
-
-#x = 'abcdefghij'
-#print(x[2:4])
-#print(x[::-1][2:4])
-#print(x[::-1][2:4][::-1])
-#print(x[-4:-2])
-#print(x[0:2])
-
+    return sum(values)
 
 lines = parse_input()#'test_input.txt')
-values, answer, maps = get_answer(lines)
-print(values)
-print(maps)
+answer = get_answer(lines)
 print(answer)

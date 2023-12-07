@@ -58,5 +58,18 @@ def get_answer(filename='input.txt'):
     return sum([scores[i][1]*(i+1) for i in range(len(scores))])
 
 
-answer = get_answer()#'test_input.txt')
-print(answer)
+def run():
+    a = get_answer()#'test_input.txt')
+    print(a)
+
+def time():
+    import timeit
+    s = timeit.default_timer()
+    for _ in range(100):
+        get_answer()
+    e = timeit.default_timer() - s
+    print(e)
+    print(e/100)
+
+run()
+#time()

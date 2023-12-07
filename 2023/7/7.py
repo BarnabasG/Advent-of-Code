@@ -27,21 +27,18 @@ def separate_lines(lines):
     return hands
 
 def score_hand(hand):
-    #print(hand)
+    print(hand)
     score = hand_type(hand)*(13**5)
     for i, card in enumerate(hand[::-1]):
-        #print(i,card,card_ranks[card],card_ranks[card]*(13**i))
+        print(i,card,card_ranks[card],card_ranks[card]*(13**i))
         score += card_ranks[card]*(13**i)
-        # score += card_ranks[card]+(13**i)
-    #print(score)
-    #print()
+    print(score)
     return score
 
 
 
 def hand_type(hand):
     counts = [hand.count(card) for card in card_ranks]
-    #print(hand, counts)
     if 5 in counts:
         return 7
     elif 4 in counts:
@@ -57,19 +54,6 @@ def hand_type(hand):
     else:
         return 1
 
-
-# def get_answer(filename='input.txt'):
-#     lines = parse_input('2023/7/'+filename)
-#     hands = separate_lines(lines)
-#     # scores = [(score_hand(k),v,k) for k,v in hands]
-#     scores = [(score_hand(k),v) for k,v in hands]
-#     print(scores)
-#     scores.sort(key=lambda x: x[0], reverse=False)
-#     print(scores)
-#     scores = [scores[i][1]*(i+1) for i in range(len(scores))]
-#     print(scores)
-#     return sum(scores)
-
 def get_answer(filename='input.txt'):
     lines = parse_input('2023/7/'+filename)
     hands = separate_lines(lines)
@@ -77,5 +61,5 @@ def get_answer(filename='input.txt'):
     return sum([scores[i][1]*(i+1) for i in range(len(scores))])
 
 
-answer = get_answer()#'test_input.txt')
+answer = get_answer('test_input.txt')
 print(answer)

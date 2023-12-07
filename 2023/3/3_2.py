@@ -1,7 +1,7 @@
 import numpy
 
 def parse_input(filename='input.txt'):
-    with open('3/'+filename, 'r') as f:
+    with open('2023/3/'+filename, 'r') as f:
         lines = f.readlines()
     
     lines = [line.rstrip('\n') for line in lines]
@@ -21,7 +21,6 @@ def get_number(line, line_index, index, found_indexes: set):
     if (line_index, index) in found_indexes:
         return -1, found_indexes
     number = line[index]
-    #indexes = [index]
     found_indexes.add((line_index, index))
     _index = index
 
@@ -67,31 +66,18 @@ def get_answer(lines, indexes):
         for neighbor in neighbors:
             try:
                 if lines[coord[0] + neighbor[0]][coord[1] + neighbor[1]].isdigit():
-                    #print(coord, (coord[0] + neighbor[0], coord[1] + neighbor[1]), lines[coord[0] + neighbor[0]][coord[1] + neighbor[1]])
                     _answer, found_indexes = get_number(lines[coord[0] + neighbor[0]], coord[0] + neighbor[0], coord[1] + neighbor[1], found_indexes)
-                    #_answer, found_indexes = get_number(lines[coord[0] + neighbor[0]], coord[0] + neighbor[0], coord[1] + neighbor[1], found_indexes)
-                    #print(_answer, found_indexes)
                     if _answer == -1: continue
                     found_neighbors[-1].append(_answer)
-                    #found_indexes.update(_found_indexes)
             except IndexError:
                 continue
-    #print(found_neighbors)
     for found_neighbor in found_neighbors:
         if len(found_neighbor) == 2:
-            #print(found_neighbor, numpy.prod(found_neighbor))
             answer += numpy.prod(found_neighbor)
     
     return answer
-        
-
-
-
-
 
 lines = parse_input()#'test_input.txt')
-#print(lines)
 indexes = get_symbol_indexes(lines)
-#print(indexes)
 answer = get_answer(lines, indexes)
 print(answer)
