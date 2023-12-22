@@ -98,7 +98,7 @@ def get_answer(filename='input.txt'):
     answer = lcm(*(cycles[p] for p in rx_pointer_pointers))
     return answer
         
-
+### TODO: Broke the lcm cycle caculation - needs fixing
 
 # Benchmarking
 def run():
