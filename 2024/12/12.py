@@ -37,20 +37,50 @@ def p1(filename):
 
 
 def calculate_price_p2(region):
-    perimeter = sum(
-        sum(1 for offset in ((0, 1), (1, 0), (-1, 0), (0, -1))
-            if (cell[0] + offset[0], cell[1] + offset[1]) not in region)
-        for cell in region
-    )
+    edges = set()
+    for char in region:
+        if any((char[0] + offset[0], char[1] + offset[1]) not in region for offset in ((0, 1), (1, 0), (-1, 0), (0, -1))):
+            edges.add(char)
+    
+    print(len(region), len(edges))
 
-    p = 0
-    for cell in region:
-        for offset in ((0, 1), (1, 0), (-1, 0), (0, -1)):
-            if (cell[0] + offset[0], cell[1] + offset[1]) not in region:
-                p += 1
+    sides = 4
+    prev = next(iter(edges))
+    prev_move = (0, 0)
+    while edges:
+        for next_neighbour in ((0, 1), (-1, 1), (-1, 0), (-1, -1), (0, -1), (1, -1), (1, 0), (1, 1)):
+            if (prev[0] + next_neighbour[0], prev[1] + next_neighbour[1]) in edges:
+                if prev_move[0] != next_neighbour[0] and prev_move[1] != next_neighbour[1]:
+                    sides += 2
+                elif prev_move[0] != next_neighbour[0] or prev_move[1] != next_neighbour[1]:
+                    sides += 1
+                edges.remove(prev)
+                prev = (prev[0] + next_neighbour[0], prev[1] + next_neighbour[1])
+                continue
+        edges.remove(prev)
+        if not edges:
+            break
+        prev = next(iter(edges))
+        sides += 1
+    
+    return sides
 
-    print(region, perimeter)
-    return 0
+
+
+    # perimeter = sum(
+    #     sum(1 for offset in ((0, 1), (1, 0), (-1, 0), (0, -1))
+    #         if (cell[0] + offset[0], cell[1] + offset[1]) not in region)
+    #     for cell in region
+    # )
+
+    # p = 0
+    # for cell in region:
+    #     for offset in ((0, 1), (1, 0), (-1, 0), (0, -1)):
+    #         if (cell[0] + offset[0], cell[1] + offset[1]) not in region:
+    #             p += 1
+
+    # print(region, perimeter)
+    # return 0
 
 def p2(filename):
     lines = read_lines(filename)

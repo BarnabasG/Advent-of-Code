@@ -154,8 +154,8 @@ def p2(filename):
     return len(bfs_2(start, end, walls))
 
 
-# print(p1('2024/16/input.txt'))
-# print(p2('2024/16/input.txt'))
+print(p1('2024/16/input.txt'))
+print(p2('2024/16/input.txt'))
 
 from pybencher import Suite
 
