@@ -20,9 +20,6 @@ def p1(filename):
     char_map_remote = {
         '^': (0,1), '<': (1,0), 'v': (1,1), '>': (1,2), 'A': (0,2)
     }
-    # move_map = {
-    #     (-1,0): '^', (1,0): 'v', (0,-1): '<', (0,1): '>'
-    # }
 
     def move_to_str(dy, dx):
         return ('v'*dy if dy > 0 else '^'*(-dy)) + ('>'*dx if dx > 0 else '<'*(-dx))    
@@ -30,17 +27,17 @@ def p1(filename):
     def seq_keypad(char, pos=char_map_keypad['A']):
         target = char_map_keypad[char]
         dy, dx = target[0]-pos[0], target[1]-pos[1]
-        # print(dy, dx)
+        # print('pos, target, dy, dx', pos, target, dy, dx)
         m = move_to_str(dy, dx)
-        move = ''.join(sorted(m)) + 'A' if target[1] == 0 and pos[0] == 2 else m + 'A'
-        return move
+        move = m + 'A' #''.join(sorted(m)) + 'A' if target[1] == 0 and pos[0] == 2 else m + 'A'
+        return move, target
     
     def seq_remote(char, pos=char_map_remote['A']):
         target = char_map_remote[char]
         dy, dx = target[0]-pos[0], target[1]-pos[1]
-        # print(dy, dx)
+        # print('pos, target, dy, dx', pos, target, dy, dx)
         m = move_to_str(dy, dx)
-        move = ''.join(sorted(m)) + 'A' if pos==char_map_remote['<'] else m + 'A'
+        move = m + 'A' #''.join(sorted(m)) + 'A' if pos==char_map_remote['<'] else m + 'A'
         return move, target
     
     def robot_recursion(moves, robot):
@@ -50,38 +47,45 @@ def p1(filename):
         new_moves = ''
         pointer = char_map_remote['A']
         for move in moves:
+            # print('robot, move, pointer', robot, move, pointer)
             move, pointer = seq_remote(move, pointer)
             new_moves += move
-        
-        # print(robot_pointers)
-        
+            # print('new_moves', new_moves)
+        # print('robot, move, pointer', robot, move, pointer)
+
         return robot_recursion(new_moves, robot - 1)
 
 
     
     def multi_step(code, robots=2):
         seq = ''
-        # base_pointer = char_map_keypad['A']
-        # robot_pointers = [char_map_remote['A'] for _ in range(robots)]
+        base_pointer = char_map_keypad['A']
         for char in code:
-            command = seq_keypad(char, char_map_keypad['A'])
-            command = robot_recursion(command, robots)
+            # print(char)
+            c, base_pointer = seq_keypad(char, base_pointer)
+            # print(c)
+            command = robot_recursion(c, robots)
             seq += command
 
         return len(seq)
     
     def extract_num(code):
-        return int(''.join([c for c in code if c.isdigit()]))
+        return int(code[:-1])
 
-    for c in codes:
-        print(extract_num(c), multi_step(c))
+    a = 0
+    for c in codes: # only code 879A
+        x, y = extract_num(c), multi_step(c)
+        print(c, y)
+        a += x * y
+    
+    return a
 
-    return sum([extract_num(c)*multi_step(c) for c in codes])
+    # return sum([extract_num(c)*multi_step(c) for c in codes])
 
 
 def p2(filename):
     return
 
-## Now undercounting - sort pointer
-print(p1('2024/21/input.txt'))
-print(p2('2024/21/test_input.txt'))
+#### ISSUE - need to make sure the robots can press the nearest keys first
+print(p1('2024/21/input.txt'))  # should be 188384
+# print(p2('2024/21/test_input.txt'))
